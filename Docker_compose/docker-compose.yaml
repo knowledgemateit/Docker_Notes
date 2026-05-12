@@ -1,8 +1,6 @@
 version: '3'
 services:
   mongodb:
-    build:
-      context: mongo
     image: techietrainerss/mongo:v1
 
   redis:
@@ -12,7 +10,7 @@ services:
     container_name: rabbitmq
     image: rabbitmq:3.7-management-alpine
     ports:
-      - "15672:15672" # Management UI
+      - "15672:15672" 
 
   mysql:
     container_name: mysql
@@ -27,12 +25,10 @@ services:
       - mongodb
 
   user:
-    build:
-      context: user
     image: techietrainerss/user:v1
     environment:
       MONGO_URL: "mongodb://mongodb:27017/users"
-      REDIS_HOST: redis # Fixed typo
+      REDIS_HOST: redis
     depends_on:
       - mongodb
       - redis
@@ -66,12 +62,10 @@ services:
       - rabbitmq
 
   web:
-    build:
-      context: web
     image: techietrainerss/web:v1
     depends_on:
       - user
       - catalogue
-      - cart # Added for full stack readiness
+      - cart
     ports:
-      - "8080:80" # Map host 8080 to container 80
+      - "8080:80"
